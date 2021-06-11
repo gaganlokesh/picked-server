@@ -1,0 +1,31 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+
+AllCops:
+  Exclude:
+    - bin/**/*
+    - db/schema.rb
+    - db/migrate/*.rb
+    - tmp/**/*
+    - vendor/**/*
+    - test/**/*
+  DisplayStyleGuide: true
+  ExtraDetails: true
+  NewCops: enable # opt-in to new cops by default
+  TargetRubyVersion: 3.0
+
+#################### Style ###############################
+
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+
+Style/StringLiterals:
+  Description: 'Checks if uses of quotes match the configured preference.'
+  StyleGuide: '#consistent-string-literals'
+  Enabled: true
+  EnforcedStyle: double_quotes
+  ConsistentQuotesInMultiline: true
