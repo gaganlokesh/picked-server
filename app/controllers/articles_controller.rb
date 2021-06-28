@@ -3,7 +3,14 @@ require "openssl"
 class ArticlesController < ApplicationController
   before_action :verify_signature, only: [:webhook]
 
-  def index; end
+  PER_PAGE = 20
+
+  def index
+    per_page = params[:per_page] || PER_PAGE
+
+    @articles = Article.page(params[:page].to_i).per(per_page)
+    render json: @articles, status: :ok
+  end
 
   def webhook
     if params[:sourceId] && !params[:items].empty?
