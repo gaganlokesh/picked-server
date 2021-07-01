@@ -25,6 +25,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '~> 1.1'
 
+# Simple, Fast, and Declarative Serialization Library for Ruby
+gem 'blueprinter', '~> 0.25.3'
 # Slugging and permalink plugin for Active Record
 gem 'friendly_id', '~> 5.4.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps

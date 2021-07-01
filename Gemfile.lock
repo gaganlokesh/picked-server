@@ -61,6 +61,7 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     ast (2.4.2)
+    blueprinter (0.25.3)
     bootsnap (1.7.3)
       msgpack (~> 1.0)
     builder (3.2.4)
@@ -182,6 +183,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  blueprinter (~> 0.25.3)
   bootsnap (>= 1.4.4)
   byebug
   faker (~> 2.18)

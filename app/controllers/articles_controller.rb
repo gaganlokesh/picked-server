@@ -3,13 +3,17 @@ require "openssl"
 class ArticlesController < ApplicationController
   before_action :verify_signature, only: [:webhook]
 
-  PER_PAGE = 20
+  PER_PAGE = 15
 
   def index
     per_page = params[:per_page] || PER_PAGE
 
-    @articles = Article.page(params[:page].to_i).per(per_page)
-    render json: @articles, status: :ok
+    @articles = Article.all
+      .order(published_at: :desc)
+      .includes(:source)
+      .page(params[:page].to_i)
+      .per(per_page)
+    render json: ArticleBlueprint.render(@articles), status: :ok
   end
 
   def webhook
