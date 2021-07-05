@@ -26,9 +26,11 @@ class ArticlesController < ApplicationController
           author_name: feed_item[:author],
           url: feed_item[:url],
           canonical_url: feed_item[:canonicalUrl],
+          image_key: feed_item[:s3ImageKey],
+          image_placeholder: feed_item[:imagePlaceholder],
           original_image_url: feed_item[:image],
           read_time: feed_item[:readTime],
-          metered: feed_item[:paid],
+          metered: feed_item[:metered],
           published_at: feed_item[:publishedAt]
         )
       end
