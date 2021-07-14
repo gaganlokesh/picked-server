@@ -27,6 +27,8 @@ gem 'rack-cors', '~> 1.1'
 
 # Simple, Fast, and Declarative Serialization Library for Ruby
 gem 'blueprinter', '~> 0.25.3'
+# Flexible authentication solution for Rails with Warden
+gem 'devise', '~> 4.8'
 # Slugging and permalink plugin for Active Record
 gem 'friendly_id', '~> 5.4.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
