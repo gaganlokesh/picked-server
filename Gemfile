@@ -29,6 +29,12 @@ gem 'rack-cors', '~> 1.1'
 gem 'blueprinter', '~> 0.25.3'
 # Flexible authentication solution for Rails with Warden
 gem 'devise', '~> 4.8'
+# OAuth 2 provider for Ruby on Rails
+gem 'doorkeeper', '~> 5.5'
+# Assertion grant extension for Doorkeeper
+gem 'doorkeeper-grants_assertion', '~> 0.3'
+# Simple, but flexible HTTP client library, with support for multiple backends.
+gem 'faraday', '~> 1.5'
 # Slugging and permalink plugin for Active Record
 gem 'friendly_id', '~> 5.4.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
