@@ -14,7 +14,14 @@ Doorkeeper.configure do
   # end
 
   resource_owner_from_assertion do
-    Authentication::Providers::Github.new(params[:assertion]).user!
+    return unless params[:provider]
+
+    case params[:provider]
+    when "github"
+      Authentication::Providers::Github.new(params[:assertion]).user!
+    when "google"
+      Authentication::Providers::Google.new(params[:assertion]).user!
+    end
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
