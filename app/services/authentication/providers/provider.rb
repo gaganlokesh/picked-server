@@ -1,10 +1,10 @@
 module Authentication
   module Providers
     class Provider
-      attr_reader :access_code
+      attr_reader :access_token
 
-      def initialize(access_code)
-        @access_code = access_code
+      def initialize(access_token)
+        @access_token = access_token
       end
 
       def provider_name
