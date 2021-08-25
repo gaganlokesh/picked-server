@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     skip_controllers :applications, :authorized_applications, :authorizations
     controllers tokens: "oauth/tokens"
   end
-  devise_for :users
+  # devise_for :users
 
   resources :articles, only: [:index]
   post "articles/webhook", to: "articles#webhook"
