@@ -1,3 +1,3 @@
 class UserBlueprint < ApplicationBlueprint
-  fields :id, :name
+  fields :id, :name, :email
 end
