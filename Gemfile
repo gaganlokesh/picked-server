@@ -25,6 +25,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '~> 1.1'
 
+# Allow any model to follow any other model
+gem "acts_as_follower", github: "gaganlokesh/acts_as_follower", branch: "main"
 # Simple, Fast, and Declarative Serialization Library for Ruby
 gem 'blueprinter', '~> 0.25.3'
 # Flexible authentication solution for Rails with Warden
