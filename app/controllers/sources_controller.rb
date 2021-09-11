@@ -1,5 +1,5 @@
 class SourcesController < ApplicationController
-  skip_before_action :doorkeeper_authorize!
+  skip_before_action :doorkeeper_authorize!, only: [:index, :show, :articles]
 
   PER_PAGE = 15
 
@@ -29,5 +29,12 @@ class SourcesController < ApplicationController
       .per(per_page)
 
     render json: ArticleBlueprint.render(articles), status: :ok
+  end
+
+  def follow
+    source = Source.friendly.find(params[:slug])
+    current_user.follow(source)
+
+    render json: { status: "success" }, status: :ok
   end
 end

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   post "articles/webhook", to: "articles#webhook"
   resources :sources, only: [:index, :show], param: :slug do
     resources :articles, only: [:index], to: "sources#articles"
+    member do
+      post :follow
+    end
   end
   resources :users, only: [:show] do
     collection do
