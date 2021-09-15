@@ -1,6 +1,8 @@
 class Source < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-  
-  has_many :articles
+
+  acts_as_followable
+
+  has_many :articles, dependent: :destroy
 end

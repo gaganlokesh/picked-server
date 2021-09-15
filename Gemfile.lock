@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/gaganlokesh/acts_as_follower.git
+  revision: ce367775cb8f93d1b00c14f30b4e2553d10bdcad
+  branch: main
+  specs:
+    acts_as_follower (0.2.1)
+      activerecord (>= 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -220,6 +228,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  acts_as_follower!
   blueprinter (~> 0.25.3)
   bootsnap (>= 1.4.4)
   byebug

@@ -1,7 +1,7 @@
 require "openssl"
 
 class ArticlesController < ApplicationController
-  skip_before_action :doorkeeper_authorize!, only: [:webhook]
+  skip_before_action :doorkeeper_authorize!
   before_action :verify_signature, only: [:webhook]
 
   PER_PAGE = 15
