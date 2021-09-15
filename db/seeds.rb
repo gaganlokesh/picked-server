@@ -18,7 +18,8 @@ SOURCE_COUNT.times do
     name: name = Faker::TvShows::SiliconValley.unique.company,
     slug: Faker::Internet.slug(words: name, glue: "-"),
     website_url: Faker::Internet.url,
-    feed_url: Faker::Internet.url(path: "/feed")
+    feed_url: Faker::Internet.url(path: "/feed"),
+    description: Faker::TvShows::SiliconValley.motto
   )
 end
 

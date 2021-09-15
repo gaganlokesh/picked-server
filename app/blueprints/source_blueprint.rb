@@ -1,5 +1,5 @@
 class SourceBlueprint < ApplicationBlueprint
-  fields :id, :name, :website_url, :slug
+  fields :id, :name, :website_url, :slug, :description
 
   field :image_url do
     # FIXME: Returning dummy image URL for development purposes
