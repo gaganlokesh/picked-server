@@ -16,7 +16,11 @@ class SourcesController < ApplicationController
 
   def show
     source = Source.friendly.find(params[:slug])
-    render json: SourceBlueprint.render(source), status: :ok
+    render json: SourceBlueprint.render(
+      source,
+      current_user: current_user,
+      view: :extended
+    ), status: :ok
   end
 
   def articles
