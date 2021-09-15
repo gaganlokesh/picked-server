@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :articles, only: [:index], to: "sources#articles"
     member do
       post :follow
+      post :unfollow
     end
   end
   resources :users, only: [:show] do

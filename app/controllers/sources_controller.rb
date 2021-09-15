@@ -37,4 +37,11 @@ class SourcesController < ApplicationController
 
     render json: { status: "success" }, status: :ok
   end
+
+  def unfollow
+    source = Source.friendly.find(params[:slug])
+    current_user.stop_following(source)
+
+    render json: { status: "success" }, status: :ok
+  end
 end
