@@ -6,6 +6,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable
 
+  has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_articles, through: :bookmarks, source: :article
+
   validates :provider, inclusion: { in: Authentication::Providers.all.map(&:to_s) }, allow_nil: true
 
   def self.from_external_authorizer(auth)
