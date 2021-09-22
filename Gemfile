@@ -43,6 +43,8 @@ gem 'friendly_id', '~> 5.4.0'
 gem 'kaminari-activerecord', "~> 1.2"
 
 group :development, :test do
+  # help to kill N+1 queries and unused eager loading
+  gem 'bullet', '~> 6.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # A library for generating fake data such as names, addresses, and phone numbers.
