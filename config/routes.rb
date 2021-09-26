@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       post :remove_bookmark
     end
   end
+  resources :bookmarks, only: [:index]
   resources :sources, only: [:index, :show], param: :slug do
     resources :articles, only: [:index], to: "sources#articles"
     member do

@@ -28,11 +28,12 @@ class SourcesController < ApplicationController
     per_page = params[:per_page] || PER_PAGE
 
     articles = source.articles
+      .includes(:bookmarks)
       .order(published_at: :desc)
       .page(params[:page].to_i)
       .per(per_page)
 
-    render json: ArticleBlueprint.render(articles), status: :ok
+    render json: ArticleBlueprint.render(articles, current_user: current_user), status: :ok
   end
 
   def follow
