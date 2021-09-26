@@ -25,7 +25,7 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    return current_resource_owner if doorkeeper_token
+    @current_user ||= current_resource_owner
   end
 
   private
