@@ -1,7 +1,7 @@
 require "openssl"
 
 class ArticlesController < ApplicationController
-  skip_before_action :doorkeeper_authorize!
+  skip_before_action :doorkeeper_authorize!, only: [:index, :webhook]
   before_action :verify_signature, only: [:webhook]
 
   PER_PAGE = 15
@@ -15,6 +15,21 @@ class ArticlesController < ApplicationController
       .page(params[:page].to_i)
       .per(per_page)
     render json: ArticleBlueprint.render(@articles), status: :ok
+  end
+
+  def bookmark
+    article = Article.find(params[:id])
+    Bookmark.create!(user: current_user, article: article)
+
+    render json: { status: "success", message: "Bookmarked Article!" }, status: :created
+  end
+
+  def remove_bookmark
+    article = Article.find(params[:id])
+    bookmark = Bookmark.find_by(user: current_user, article: article)
+    bookmark.destroy
+
+    render json: { status: "success", message: "Bookmark removed!" }, status: :ok
   end
 
   def webhook
