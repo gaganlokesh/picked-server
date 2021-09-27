@@ -14,7 +14,15 @@ class ArticlesController < ApplicationController
       .page(params[:page].to_i)
       .per(per_page)
 
-    render json: ArticleBlueprint.render(articles, current_user: current_user), status: :ok
+    if current_user.present?
+      render json: ArticleBlueprint.render(
+        articles,
+        current_user: current_user,
+        view: :with_user_context
+      ), status: :ok
+    else
+      render json: ArticleBlueprint.render(articles), status: :ok
+    end
   end
 
   def bookmark
