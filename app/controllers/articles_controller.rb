@@ -8,9 +8,13 @@ class ArticlesController < ApplicationController
 
   def index
     per_page = params[:per_page] || PER_PAGE
-    articles = Article.all
+    relation = Article.all
       .order(published_at: :desc)
-      .includes(:source, :bookmarks)
+      .includes(:source)
+
+    relation = relation.includes(:bookmarks) if current_user.present?
+
+    articles = relation
       .page(params[:page].to_i)
       .per(per_page)
 

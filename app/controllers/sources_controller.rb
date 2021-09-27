@@ -24,11 +24,13 @@ class SourcesController < ApplicationController
   end
 
   def articles
-    source = Source.friendly.find(params[:source_slug])
     per_page = params[:per_page] || PER_PAGE
+    source = Source.friendly.find(params[:source_slug])
+    relation = source.articles
 
-    articles = source.articles
-      .includes(:bookmarks)
+    relation = relation.includes(:bookmarks) if current_user.present?
+
+    articles = relation
       .order(published_at: :desc)
       .page(params[:page].to_i)
       .per(per_page)
