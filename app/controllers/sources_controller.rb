@@ -59,6 +59,19 @@ class SourcesController < ApplicationController
     end
   end
 
+  def following
+    per_page = params[:per_page] || PER_PAGE
+    sources = current_user.following_sources
+      .page(params[:page]&.to_i)
+      .per(per_page)
+
+    render json: SourceBlueprint.render(
+      sources,
+      current_user: current_user,
+      view: :with_user_context
+    ), status: :ok
+  end
+
   def follow
     source = Source.friendly.find(params[:slug])
     current_user.follow(source)

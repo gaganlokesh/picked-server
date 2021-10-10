@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   use_doorkeeper do
     skip_controllers :applications, :authorized_applications, :authorizations
     controllers tokens: "oauth/tokens"
@@ -18,6 +19,9 @@ Rails.application.routes.draw do
   resources :bookmarks, only: [:index]
   resources :sources, only: [:index, :show], param: :slug do
     resources :articles, only: [:index], to: "sources#articles"
+    collection do
+      get :following
+    end
     member do
       post :follow
       post :unfollow
@@ -28,6 +32,5 @@ Rails.application.routes.draw do
       get :me
     end
   end
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
 # rubocop:enable Metrics/BlockLength
