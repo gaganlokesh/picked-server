@@ -11,16 +11,29 @@ class SourcesController < ApplicationController
       .page(params[:page].to_i)
       .per(per_page)
 
-    render json: SourceBlueprint.render(sources), status: :ok
+    if current_user.present?
+      render json: SourceBlueprint.render(
+        sources,
+        current_user: current_user,
+        view: :with_user_context
+      ), status: :ok
+    else
+      render json: SourceBlueprint.render(sources), status: :ok
+    end
   end
 
   def show
     source = Source.friendly.find(params[:slug])
-    render json: SourceBlueprint.render(
-      source,
-      current_user: current_user,
-      view: :extended
-    ), status: :ok
+
+    if current_user.present?
+      render json: SourceBlueprint.render(
+        source,
+        current_user: current_user,
+        view: :extended_with_user_context
+      ), status: :ok
+    else
+      render json: SourceBlueprint.render(source, view: :extended), status: :ok
+    end
   end
 
   def articles

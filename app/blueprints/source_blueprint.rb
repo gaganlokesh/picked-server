@@ -11,14 +11,16 @@ class SourceBlueprint < ApplicationBlueprint
     field :followers_count do |source, _|
       source.followers_count
     end
+  end
 
+  view :with_user_context do
     field :is_following do |source, options|
-      current_user = options[:current_user]
-      if current_user.blank?
-        false
-      else
-        current_user.following?(source)
-      end
+      options[:current_user].following?(source)
     end
+  end
+
+  view :extended_with_user_context do
+    include_view :extended
+    include_view :with_user_context
   end
 end
