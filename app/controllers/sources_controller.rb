@@ -85,4 +85,13 @@ class SourcesController < ApplicationController
 
     render json: { status: "success" }, status: :ok
   end
+
+  def suggested
+    followings = current_user.following_sources.ids
+    sources = Source.where.not(id: followings)
+      .order(Arel.sql("RANDOM()"))
+      .limit(3)
+
+    render json: SourceBlueprint.render(sources), status: :ok
+  end
 end

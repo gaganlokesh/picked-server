@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :articles, only: [:index], to: "sources#articles"
     collection do
       get :following
+      get :suggested
     end
     member do
       post :follow
