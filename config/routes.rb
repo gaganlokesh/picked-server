@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     end
   end
   resources :bookmarks, only: [:index]
+  resource :feed, only: [:show] do
+    get ":type", to: "feeds#show", as: :type
+  end
   resources :sources, only: [:index, :show], param: :slug do
     resources :articles, only: [:index], to: "sources#articles"
     collection do
