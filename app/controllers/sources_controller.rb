@@ -1,5 +1,5 @@
 class SourcesController < ApplicationController
-  skip_before_action :doorkeeper_authorize!, only: [:index, :show, :articles]
+  skip_before_action :doorkeeper_authorize!, only: [:index, :show, :articles, :suggested]
 
   PER_PAGE = 15
 
@@ -87,7 +87,7 @@ class SourcesController < ApplicationController
   end
 
   def suggested
-    followings = current_user.following_sources.ids
+    followings = current_user.present? ? current_user.following_sources.ids : []
     sources = Source.where.not(id: followings)
       .order(Arel.sql("RANDOM()"))
       .limit(3)
