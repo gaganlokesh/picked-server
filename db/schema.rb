@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_163346) do
+ActiveRecord::Schema.define(version: 2021_10_31_182152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,16 @@ ActiveRecord::Schema.define(version: 2021_09_22_163346) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "reactions", force: :cascade do |t|
+    t.string "reactable_type", null: false
+    t.bigint "reactable_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reactable_type", "reactable_id"], name: "index_reactions_on_reactable"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
   create_table "sources", force: :cascade do |t|
     t.string "name"
     t.string "image_key"
@@ -113,4 +123,5 @@ ActiveRecord::Schema.define(version: 2021_09_22_163346) do
   add_foreign_key "bookmarks", "articles"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "reactions", "users"
 end
