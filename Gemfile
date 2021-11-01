@@ -29,6 +29,8 @@ gem 'rack-cors', '~> 1.1'
 gem "acts_as_follower", github: "gaganlokesh/acts_as_follower", branch: "main"
 # Simple, Fast, and Declarative Serialization Library for Ruby
 gem 'blueprinter', '~> 0.25.3'
+# Turbo-charged counter caches for your Rails app
+gem 'counter_culture', '~> 3.0'
 # Flexible authentication solution for Rails with Warden
 gem 'devise', '~> 4.8'
 # OAuth 2 provider for Ruby on Rails
