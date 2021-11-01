@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resource :feed, only: [:show] do
     get ":type", to: "feeds#show", as: :type
   end
-  resources :sources, only: [:index, :show], param: :slug do
+  resources :sources, only: %i[index show], param: :slug do
     resources :articles, only: [:index], to: "sources#articles"
     collection do
       get :following

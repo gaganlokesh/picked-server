@@ -1,5 +1,5 @@
 class SourcesController < ApplicationController
-  skip_before_action :doorkeeper_authorize!, only: [:index, :show, :articles, :suggested]
+  skip_before_action :doorkeeper_authorize!, only: %i[index show articles suggested]
 
   PER_PAGE = 15
 
