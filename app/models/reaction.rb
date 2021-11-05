@@ -8,4 +8,12 @@ class Reaction < ApplicationRecord
 
   validates :reactable_type, inclusion: { in: REACTABLE_TYPES }
   validates :user_id, uniqueness: { scope: %i[reactable_id reactable_type] }
+
+  after_commit :update_reactable
+
+  private
+
+  def update_reactable
+    reactable.on_reactions_update if reactable.respond_to?(:on_reactions_update)
+  end
 end
