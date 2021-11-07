@@ -1,7 +1,7 @@
 class FeedsController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: [:show]
 
-  FEED_TYPES = %w[discover following recommended].freeze
+  FEED_TYPES = %w[following recommended recent top].freeze
   PER_PAGE = 15
 
   def show
@@ -26,17 +26,14 @@ class FeedsController < ApplicationController
   def feed_stories
     feed_type = params[:type]
 
-    if current_user.present? && FEED_TYPES.includes(feed_type)
-      case feed_type
-      when "following"
-        following_stories
-      when "recommended"
-        recommended_stories
-      else
-        dicover_stories
-      end
+    if current_user.present? && feed_type == "following"
+      following_stories
+    elsif current_user.present? && feed_type == "recommended"
+      recommended_stories
+    elsif feed_type == "recent"
+      recent_stories
     else
-      dicover_stories
+      top_stories
     end
   end
 
@@ -44,19 +41,28 @@ class FeedsController < ApplicationController
     current_user
       .following_sources
       .articles
-      .order(published_at: :desc)
+      .order(hotness: :desc)
       .includes(:source, :bookmarks)
   end
 
   def recommended_stories
-    Article.all
-      .order(published_at: :desc)
+    following_sources_ids = current_user.following_sources.pluck(:id)
+
+    Article
+      .where.not(source_id: following_sources_ids)
+      .order(hotness: :desc)
       .includes(:source, :bookmarks)
   end
 
-  def dicover_stories
+  def recent_stories
     Article.all
-      .order(published_at: :desc)
-      .includes(:source)
+      .order(created_at: :desc)
+      .includes(:source, :bookmarks)
+  end
+
+  def top_stories
+    Article.all
+      .order(hotness: :desc)
+      .includes(:source, :bookmarks)
   end
 end
