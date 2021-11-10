@@ -6,7 +6,12 @@ class FeedsController < ApplicationController
 
   def show
     per_page = params[:per_page]&.to_i || PER_PAGE
-    stories = feed_stories
+    stories = if current_user.present?
+                feed_stories.includes(:source, :bookmarks, :reactions)
+              else
+                feed_stories.includes(:source)
+              end
+    stories = stories
       .page(params[:page]&.to_i)
       .per(per_page)
 
@@ -41,8 +46,7 @@ class FeedsController < ApplicationController
     current_user
       .following_sources
       .articles
-      .order(hotness: :desc)
-      .includes(:source, :bookmarks)
+      .order(hotness: :desc, created_at: :desc)
   end
 
   def recommended_stories
@@ -50,19 +54,16 @@ class FeedsController < ApplicationController
 
     Article
       .where.not(source_id: following_sources_ids)
-      .order(hotness: :desc)
-      .includes(:source, :bookmarks)
+      .order(hotness: :desc, created_at: :desc)
   end
 
   def recent_stories
     Article.all
       .order(created_at: :desc)
-      .includes(:source, :bookmarks)
   end
 
   def top_stories
     Article.all
-      .order(hotness: :desc)
-      .includes(:source, :bookmarks)
+      .order(hotness: :desc, created_at: :desc)
   end
 end
