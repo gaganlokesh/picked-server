@@ -12,8 +12,8 @@ Rails.application.routes.draw do
       post :webhook
     end
     member do
-      post :bookmark
-      post :remove_bookmark
+      post :bookmark, to: "bookmarks#create"
+      delete :bookmark, to: "bookmarks#destroy"
     end
   end
   resources :bookmarks, only: [:index]

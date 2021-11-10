@@ -29,21 +29,6 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def bookmark
-    article = Article.find(params[:id])
-    Bookmark.create!(user: current_user, article: article)
-
-    render json: { status: "success", message: "Bookmarked Article!" }, status: :created
-  end
-
-  def remove_bookmark
-    article = Article.find(params[:id])
-    bookmark = Bookmark.find_by(user: current_user, article: article)
-    bookmark.destroy
-
-    render json: { status: "success", message: "Bookmark removed!" }, status: :ok
-  end
-
   def webhook
     if params[:sourceId] && !params[:items].empty?
       source = Source.friendly.find(params[:sourceId])
