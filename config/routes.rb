@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     member do
       post :bookmark, to: "bookmarks#create"
       delete :bookmark, to: "bookmarks#destroy"
+      post :upvote, to: "reactions#create", defaults: { reactable_type: "Article" }
+      delete :upvote, to: "reactions#destroy", defaults: { reactable_type: "Article" }
     end
   end
   resources :bookmarks, only: [:index]
