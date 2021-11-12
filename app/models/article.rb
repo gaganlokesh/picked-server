@@ -10,12 +10,10 @@ class Article < ApplicationRecord
 
   after_save_commit :async_update_score
 
-  def on_reactions_update
-    async_update_score
-  end
-
-  def on_bookmarks_update
-    async_update_score
+  %w[reactions bookmarks views].each do |association|
+    define_method("on_#{association}_update") do
+      async_update_score
+    end
   end
 
   def async_update_score
@@ -23,7 +21,7 @@ class Article < ApplicationRecord
   end
 
   def update_score
-    score = reactions_count + bookmarks_count
+    score = reactions_count + bookmarks_count + views_count
     update_columns(
       score: score,
       hotness: calculate_hotness(score),
