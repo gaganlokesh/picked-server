@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_articles, through: :bookmarks, source: :article
+  has_many :views, dependent: :nullify
+  has_many :read_articles, through: :views, source: :article
 
   validates :provider, inclusion: { in: Authentication::Providers.all.map(&:to_s) }, allow_nil: true
 
