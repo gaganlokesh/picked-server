@@ -5,6 +5,7 @@ class Article < ApplicationRecord
   has_many :bookmarked_users, through: :bookmarks, source: :user
   has_many :reactions, as: :reactable, dependent: :destroy
   has_many :views, dependent: :destroy
+  has_many :reports, as: :reportable, dependent: :destroy
 
   belongs_to :source
 

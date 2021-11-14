@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_12_181517) do
+ActiveRecord::Schema.define(version: 2021_11_13_124032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,18 @@ ActiveRecord::Schema.define(version: 2021_11_12_181517) do
     t.index ["user_id", "reactable_id", "reactable_type"], name: "index_reactions_on_user_id_and_reactable_id_and_reactable_type", unique: true
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.string "reportable_type", null: false
+    t.bigint "reportable_id", null: false
+    t.string "category"
+    t.text "reason"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "sources", force: :cascade do |t|
     t.string "name"
     t.string "image_key"
@@ -140,6 +152,7 @@ ActiveRecord::Schema.define(version: 2021_11_12_181517) do
   add_foreign_key "bookmarks", "users"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "reactions", "users"
+  add_foreign_key "reports", "users"
   add_foreign_key "views", "articles"
   add_foreign_key "views", "users"
 end
