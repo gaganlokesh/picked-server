@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       delete :upvote, to: "reactions#destroy", defaults: { reactable_type: "Article" }
       post :view, to: "views#create"
       post :report, to: "reports#create", defaults: { reportable_type: "Article" }
+      post :hide
     end
   end
   resources :bookmarks, only: [:index]

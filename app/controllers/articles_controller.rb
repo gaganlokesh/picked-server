@@ -29,6 +29,16 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def hide
+    article = HiddenArticle.new(article_id: params[:id], user_id: current_user&.id)
+
+    if article.save
+      render json: {}, status: :ok
+    else
+      render json: { status: "error", message: article.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def webhook
     if params[:sourceId] && !params[:items].empty?
       source = Source.friendly.find(params[:sourceId])

@@ -6,6 +6,7 @@ class Article < ApplicationRecord
   has_many :reactions, as: :reactable, dependent: :destroy
   has_many :views, dependent: :destroy
   has_many :reports, as: :reportable, dependent: :destroy
+  has_many :hidden_articles, dependent: :destroy
 
   belongs_to :source
 
