@@ -6,12 +6,7 @@ class FeedsController < ApplicationController
 
   def show
     per_page = params[:per_page]&.to_i || PER_PAGE
-    stories = if current_user.present?
-                feed_stories.includes(:source, :bookmarks, :reactions)
-              else
-                feed_stories.includes(:source)
-              end
-    stories = stories
+    stories = feed_stories
       .page(params[:page]&.to_i)
       .per(per_page)
 
@@ -29,6 +24,16 @@ class FeedsController < ApplicationController
   private
 
   def feed_stories
+    if current_user.present?
+      stories_for_feed_type
+        .where.not(id: current_user.hidden_articles.pluck(:article_id))
+        .includes(:source, :bookmarks, :reactions)
+    else
+      stories_for_feed_type.includes(:source)
+    end
+  end
+
+  def stories_for_feed_type
     feed_type = params[:type]
 
     if current_user.present? && feed_type == "following"
