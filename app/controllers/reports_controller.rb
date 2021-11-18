@@ -12,6 +12,6 @@ class ReportsController < ApplicationController
   private
 
   def report_params
-    params.permit(:category, :reason, :reportable_type, :reportable_id)
+    params.require(:report).permit(:category, :reason, :reportable_type, :reportable_id)
   end
 end
