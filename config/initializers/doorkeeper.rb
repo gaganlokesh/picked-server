@@ -20,7 +20,10 @@ Doorkeeper.configure do
     when "github"
       Authentication::Providers::Github.new(params[:assertion]).user!
     when "google"
-      Authentication::Providers::Google.new(params[:assertion]).user!
+      Authentication::Providers::Google.new(
+        params[:assertion],
+        params[:redirect_uri]
+      ).user!
     end
   end
 

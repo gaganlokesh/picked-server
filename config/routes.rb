@@ -41,5 +41,7 @@ Rails.application.routes.draw do
       get :me
     end
   end
+
+  get "oauth/authorize", to: "oauth/authorize#index"
 end
 # rubocop:enable Metrics/BlockLength
