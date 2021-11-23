@@ -11,6 +11,12 @@ class SourceBlueprint < ApplicationBlueprint
     field :followers_count do |source, _|
       source.followers_count
     end
+    field :articles_count do |source, _|
+      source.articles.size
+    end
+    field :total_views_count do |source, _|
+      source.articles.sum(:views_count)
+    end
   end
 
   view :with_user_context do
