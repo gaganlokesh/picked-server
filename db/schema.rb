@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_15_180031) do
+ActiveRecord::Schema.define(version: 2021_11_26_140453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,19 @@ ActiveRecord::Schema.define(version: 2021_11_15_180031) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["article_id"], name: "index_hidden_articles_on_article_id"
     t.index ["user_id"], name: "index_hidden_articles_on_user_id"
+  end
+
+  create_table "identities", force: :cascade do |t|
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.string "token"
+    t.string "secret"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["provider", "uid"], name: "index_identities_on_provider_and_uid", unique: true
+    t.index ["provider", "user_id"], name: "index_identities_on_provider_and_user_id", unique: true
+    t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -161,6 +174,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_180031) do
   add_foreign_key "bookmarks", "users"
   add_foreign_key "hidden_articles", "articles"
   add_foreign_key "hidden_articles", "users"
+  add_foreign_key "identities", "users"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "reactions", "users"
   add_foreign_key "reports", "users"

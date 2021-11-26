@@ -1,18 +1,28 @@
 module Authentication
   module Providers
     class Google < Provider
-      TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token".freeze
-      USER_RESOURCE_ENDPOINT = "https://www.googleapis.com/oauth2/v3/userinfo".freeze
+      TOKEN_URL = "https://oauth2.googleapis.com/token".freeze
+      USER_RESOURCE_URL = "https://www.googleapis.com/oauth2/v3/userinfo".freeze
+
+      def authenticate
+        @access_token = fetch_access_token
+        return nil if @access_token.blank?
+
+        user_response = fetch_user_data
+        construct_user_hash_from_response(user_response)
+      end
+
+      private
 
       def fetch_access_token
         request_params = {
           grant_type: "authorization_code",
-          code: @code,
+          code: auth_params[:code],
           client_id: Rails.application.credentials.dig(:google, :client_id),
           client_secret: Rails.application.credentials.dig(:google, :client_secret),
-          redirect_uri: @redirect_uri
+          redirect_uri: redirect_uri
         }
-        response = faraday_client.post(TOKEN_ENDPOINT) do |req|
+        response = faraday_client.post(TOKEN_URL) do |req|
           req.headers["Content-Type"] = "application/x-www-form-urlencoded"
           req.headers["Accept"] = "application/json"
           req.body = URI.encode_www_form(request_params)
@@ -22,33 +32,27 @@ module Authentication
       end
 
       def fetch_user_data
-        access_token = fetch_access_token
-        return if access_token.blank?
+        return if @access_token.blank?
 
-        response = faraday_client.get(USER_RESOURCE_ENDPOINT) do |req|
-          req.headers["Authorization"] = "Bearer #{access_token}"
+        response = faraday_client.get(USER_RESOURCE_URL) do |req|
+          req.headers["Authorization"] = "Bearer #{@access_token}"
         end
 
-        construct_user_hash_from_response(JSON.parse(response.body))
+        JSON.parse(response.body)
       end
 
-      def user!
-        user = fetch_user_data
-        return nil if user.blank?
-
-        User.from_external_authorizer(user)
-      end
-
-      private
-
-      def construct_user_hash_from_response(user)
+      def construct_user_hash_from_response(response)
         {
           provider: provider_name,
-          uid: user["sub"],
+          uid: response["sub"],
+          credentials: {
+            token: @access_token,
+            secret: nil
+          },
           info: {
-            name: user["name"],
-            email: user["email"],
-            image: user["picture"]
+            name: response["name"],
+            email: response["email"],
+            image: response["picture"]
           }
         }
       end

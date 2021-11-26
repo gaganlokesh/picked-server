@@ -1,10 +1,10 @@
 module Authentication
   module Providers
     class Provider
-      attr_reader :code, :redirect_uri
+      attr_reader :auth_params, :redirect_uri
 
-      def initialize(code, redirect_uri = nil)
-        @code = code
+      def initialize(auth_params, redirect_uri = nil)
+        @auth_params = auth_params
         @redirect_uri = redirect_uri
       end
 
@@ -14,6 +14,10 @@ module Authentication
 
       def self.provider_name
         name.demodulize.downcase.to_sym
+      end
+
+      def self.for(provider_name)
+        Authentication::Providers.const_get(provider_name.to_s.capitalize)
       end
 
       protected

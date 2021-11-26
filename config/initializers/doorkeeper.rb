@@ -14,17 +14,13 @@ Doorkeeper.configure do
   # end
 
   resource_owner_from_assertion do
-    return unless params[:provider]
+    return unless Authentication::Providers.all.include?(params[:provider]&.to_sym)
 
-    case params[:provider]
-    when "github"
-      Authentication::Providers::Github.new(params[:assertion]).user!
-    when "google"
-      Authentication::Providers::Google.new(
-        params[:assertion],
-        params[:redirect_uri]
-      ).user!
-    end
+    Authentication::Authenticator.call(
+      params[:provider],
+      params[:assertion],
+      params[:redirect_uri]
+    )
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb

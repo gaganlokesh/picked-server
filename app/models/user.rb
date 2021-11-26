@@ -12,11 +12,12 @@ class User < ApplicationRecord
   has_many :views, dependent: :nullify
   has_many :read_articles, through: :views, source: :article
   has_many :hidden_articles, dependent: :destroy
+  has_many :identities, dependent: :destroy
 
   validates :provider, inclusion: { in: Authentication::Providers.all.map(&:to_s) }, allow_nil: true
 
   def self.from_external_authorizer(auth)
-    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
+    where(email: auth[:info][:email]).first_or_create do |user|
       user.email = auth[:info][:email]
       user.password = Devise.friendly_token[0, 16]
       user.name = auth[:info][:name]
