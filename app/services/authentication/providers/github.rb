@@ -1,6 +1,7 @@
 module Authentication
   module Providers
     class Github < Provider
+      AUTHORIZATION_URL = "https://github.com/login/oauth/authorize".freeze
       TOKEN_URL = "https://github.com/login/oauth/access_token".freeze
       USER_RESOURCE_URL = "https://api.github.com/user".freeze
 
@@ -10,6 +11,16 @@ module Authentication
 
         user_response = fetch_user_data
         construct_user_hash_from_response(user_response)
+      end
+
+      def self.authorize_url(callback_url)
+        query_params = {
+          client_id: Rails.application.credentials.dig(:github, :client_id),
+          response_type: "code",
+          redirect_uri: callback_url
+        }
+
+        "#{AUTHORIZATION_URL}?#{query_params.to_query}"
       end
 
       private

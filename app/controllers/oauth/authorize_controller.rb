@@ -2,48 +2,16 @@ module Oauth
   class AuthorizeController < ApplicationController
     skip_before_action :doorkeeper_authorize!
 
-    GITHUB_OAUTH_ENDPOINT = "https://github.com/login/oauth/authorize".freeze
-    GOOGLE_OAUTH_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth".freeze
-
     def index
-      uri = case params[:provider]
-            when "github"
-              authorize_with_github
-            when "google"
-              authorize_with_google
-            when "twitter"
-              authorize_with_twitter
-            end
+      provider_class = Authentication::Providers::Provider.for(authorize_params[:provider])
 
-      redirect_to uri
+      redirect_to provider_class.authorize_url(authorize_params[:redirect_uri])
     end
 
     private
 
-    def authorize_with_github
-      github_params = query_params
-
-      "#{GITHUB_OAUTH_ENDPOINT}?#{github_params.to_query}"
-    end
-
-    def authorize_with_google
-      google_params = query_params.merge(
-        scope: "profile email"
-      )
-
-      "#{GOOGLE_OAUTH_ENDPOINT}?#{google_params.to_query}"
-    end
-
-    def authorize_with_twitter
-      Authentication::Providers::Twitter.authorize_url(params[:redirect_uri])
-    end
-
-    def query_params
-      {
-        redirect_uri: params[:redirect_uri],
-        client_id: Rails.application.credentials.dig(params[:provider].to_sym, :client_id),
-        response_type: "code"
-      }
+    def authorize_params
+      params.permit(:provider, :redirect_uri)
     end
   end
 end
