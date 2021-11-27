@@ -43,6 +43,8 @@ gem 'faraday', '~> 1.5'
 gem 'friendly_id', '~> 5.4.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
 gem 'kaminari-activerecord', "~> 1.2"
+# OAuth 1.0 implementation for Ruby
+gem "oauth", "~> 0.5.7"
 # Simple, efficient background processing for Ruby
 gem "sidekiq", "~> 6.2.2"
 

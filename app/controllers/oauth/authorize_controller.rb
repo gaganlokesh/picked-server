@@ -11,6 +11,8 @@ module Oauth
               authorize_with_github
             when "google"
               authorize_with_google
+            when "twitter"
+              authorize_with_twitter
             end
 
       redirect_to uri
@@ -30,6 +32,10 @@ module Oauth
       )
 
       "#{GOOGLE_OAUTH_ENDPOINT}?#{google_params.to_query}"
+    end
+
+    def authorize_with_twitter
+      Authentication::Providers::Twitter.authorize_url(params[:redirect_uri])
     end
 
     def query_params
