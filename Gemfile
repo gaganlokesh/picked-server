@@ -29,6 +29,8 @@ gem 'rack-cors', '~> 1.1'
 gem "acts_as_follower", github: "gaganlokesh/acts_as_follower", branch: "main"
 # Simple, Fast, and Declarative Serialization Library for Ruby
 gem 'blueprinter', '~> 0.25.3'
+# Classier solution for file uploads for Rails, Sinatra and other Ruby web frameworks
+gem 'carrierwave', '~> 2.2'
 # Turbo-charged counter caches for your Rails app
 gem 'counter_culture', '~> 3.0'
 # Flexible authentication solution for Rails with Warden
@@ -39,6 +41,8 @@ gem 'doorkeeper', '~> 5.5'
 gem 'doorkeeper-grants_assertion', '~> 0.3'
 # Simple, but flexible HTTP client library, with support for multiple backends.
 gem 'faraday', '~> 1.5'
+# Module for the 'fog' gem to support Amazon Web Services
+gem 'fog-aws', '~> 3.12'
 # Slugging and permalink plugin for Active Record
 gem 'friendly_id', '~> 5.4.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
