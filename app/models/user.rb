@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :read_articles, through: :views, source: :article
   has_many :hidden_articles, dependent: :destroy
   has_many :identities, dependent: :destroy
+  has_many :reports, dependent: :destroy
 
   mount_uploader :profile_image, ProfileImageUploader
 
