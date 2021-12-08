@@ -68,7 +68,7 @@ module Authentication
             username: response["screen_name"],
             name: response["name"],
             email: response["email"],
-            image: response["profile_image_url_https"]
+            image: response["profile_image_url_https"]&.to_s&.gsub("_normal", "")
           }
         }
       end

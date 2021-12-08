@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :hidden_articles, dependent: :destroy
   has_many :identities, dependent: :destroy
 
+  mount_uploader :profile_image, ProfileImageUploader
+
   validates :provider, inclusion: { in: Authentication::Providers.all.map(&:to_s) }, allow_nil: true
 
   def self.from_external_authorizer(auth)
@@ -21,6 +23,7 @@ class User < ApplicationRecord
       user.email = auth[:info][:email]
       user.password = Devise.friendly_token[0, 16]
       user.name = auth[:info][:name]
+      user.remote_profile_image_url = auth[:info][:image]
       user.provider = auth[:provider]
       user.uid = auth[:uid]
     end
