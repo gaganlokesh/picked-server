@@ -1,8 +1,6 @@
-require "openssl"
-
 class ArticlesController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: %i[index webhook]
-  before_action :verify_signature, only: [:webhook]
+  before_action :verify_request_signature, only: [:webhook]
 
   PER_PAGE = 15
 
@@ -40,39 +38,30 @@ class ArticlesController < ApplicationController
   end
 
   def webhook
-    if params[:sourceId] && !params[:items].empty?
-      source = Source.friendly.find(params[:sourceId])
+    source = Source.friendly.find(params[:sourceId])
+    feed_items = params[:items].presence || []
 
-      params[:items].each do |feed_item|
-        source.articles.create!(
-          title: feed_item[:title],
-          author_name: feed_item[:author],
-          url: feed_item[:url],
-          canonical_url: feed_item[:canonicalUrl],
-          image_key: feed_item[:s3ImageKey],
-          image_placeholder: feed_item[:imagePlaceholder],
-          original_image_url: feed_item[:image],
-          read_time: feed_item[:readTime],
-          metered: feed_item[:metered],
-          published_at: feed_item[:publishedAt]
-        )
-      end
-    end
+    Articles::ImportFromFeedResponseJob.perform_later(source.id, feed_items) if feed_items.present?
 
-    render json: { message: "New feed items added" }, status: :ok
+    head :ok
+  rescue ActiveRecord::RecordInvalid => e
+    unprocessable_entity(e.message)
   end
 
   private
 
-  def verify_signature
-    signature = request.headers["x-hub-signature"]
-    request_body = request.body.read
-    hmac = OpenSSL::HMAC.hexdigest(
-      "SHA256",
-      Rails.application.credentials.feed_webhook_secret,
-      request_body
-    )
-    calculated_signature = "sha256=#{hmac}"
-    not_authorized if !signature || !ActiveSupport::SecurityUtils.secure_compare(calculated_signature, signature)
+  def verify_request_signature
+    algorithm, signature = request.headers["X-Hub-Signature"]&.split("=")
+    if algorithm.present? && signature.present?
+      expected_signature = OpenSSL::HMAC.hexdigest(
+        algorithm,
+        Rails.application.credentials.feed_webhook_secret,
+        request.raw_post
+      )
+
+      return if ActiveSupport::SecurityUtils.secure_compare(signature, expected_signature)
+    end
+
+    not_authorized
   end
 end
