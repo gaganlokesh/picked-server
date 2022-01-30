@@ -45,6 +45,8 @@ gem 'faraday', '~> 1.5'
 gem 'fog-aws', '~> 3.12'
 # Slugging and permalink plugin for Active Record
 gem 'friendly_id', '~> 5.4.0'
+# Framework-agnostic Ruby Gem for imgproxy
+gem 'imgproxy', '~> 2.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
 gem 'kaminari-activerecord', "~> 1.2"
 # OAuth 1.0 implementation for Ruby
