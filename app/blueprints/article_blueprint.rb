@@ -3,10 +3,8 @@ class ArticleBlueprint < ApplicationBlueprint
 
   field :reactions_count, name: :upvotes_count
 
-  field :image_url do
-    # FIXME: Returning dummy image URL for development purposes
-    # Replace this with appropriate S3 URL
-    "https://picked-dev.s3.ap-south-1.amazonaws.com/articles/main/5c35bb1c6af3d7171189b0ca0cebb65c.png"
+  field :image_url do |article|
+    ImageOptimizer::S3.call(article.image_key, width: 280, height: 200, enlarge: true)
   end
 
   view :with_user_context do

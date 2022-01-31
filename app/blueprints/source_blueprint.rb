@@ -1,10 +1,8 @@
 class SourceBlueprint < ApplicationBlueprint
   fields :id, :name, :website_url, :slug, :description
 
-  field :image_url do
-    # FIXME: Returning dummy image URL for development purposes
-    # Replace this with appropriate S3 URL
-    "https://picked-dev.s3.ap-south-1.amazonaws.com/sources/logo/ycombinator-logo.png"
+  field :image_url do |source|
+    ImageOptimizer::S3.call(source.image_key, width: 100, height: 100, extend: true)
   end
 
   view :extended do
