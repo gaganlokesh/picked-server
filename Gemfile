@@ -50,7 +50,7 @@ gem 'kaminari-activerecord', "~> 1.2"
 # OAuth 1.0 implementation for Ruby
 gem "oauth", "~> 0.5.7"
 # Simple, efficient background processing for Ruby
-gem "sidekiq", "~> 6.2.2"
+gem "sidekiq", "~> 6.4.0"
 
 group :development, :test do
   # help to kill N+1 queries and unused eager loading
