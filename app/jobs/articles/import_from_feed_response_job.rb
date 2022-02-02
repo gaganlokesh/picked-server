@@ -10,13 +10,13 @@ module Articles
           title: feed_item[:title],
           author_name: feed_item[:author],
           url: feed_item[:url],
-          canonical_url: feed_item[:canonicalUrl],
-          image_key: feed_item.dig(:image, :s3ImageKey),
+          canonical_url: feed_item[:canonical_url],
+          image_key: feed_item.dig(:image, :s3_image_key),
           image_placeholder: feed_item.dig(:image, :placeholder),
           original_image_url: feed_item.dig(:image, :url),
-          read_time: feed_item[:readTime],
+          read_time: feed_item[:read_time],
           metered: feed_item[:metered],
-          published_at: feed_item[:publishedAt]
+          published_at: feed_item[:published_at]
         )
       end
     end

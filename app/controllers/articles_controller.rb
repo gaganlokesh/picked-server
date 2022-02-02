@@ -38,8 +38,8 @@ class ArticlesController < ApplicationController
   end
 
   def webhook
-    source = Source.friendly.find(params[:sourceId])
-    feed_items = params[:items].presence || []
+    source = Source.friendly.find(webhook_params[:source_id])
+    feed_items = webhook_params[:items].presence || []
 
     Articles::ImportFromFeedResponseJob.perform_later(source.id, feed_items) if feed_items.present?
 
@@ -63,5 +63,35 @@ class ArticlesController < ApplicationController
     end
 
     not_authorized
+  end
+
+  def webhook_params
+    params.deep_transform_keys!(&:underscore)
+
+    allowed_params = [
+      :source_id,
+      {
+        items: [
+          :id,
+          :title,
+          :url,
+          :canonical_url,
+          :author,
+          :metered,
+          :read_time,
+          :published_at,
+          :updated_at,
+          {
+            image: [
+              :url,
+              :s3_image_key,
+              :placeholder,
+            ]
+          }
+        ]
+      }
+    ]
+
+    params.permit(allowed_params)
   end
 end
