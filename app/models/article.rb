@@ -10,6 +10,9 @@ class Article < ApplicationRecord
 
   belongs_to :source
 
+  validates :title, presence: true
+  validates :url, presence: true, uniqueness: { scope: :source_id }
+
   after_save_commit :async_update_score
 
   %w[reactions bookmarks views].each do |association|

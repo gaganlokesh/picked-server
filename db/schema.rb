@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_28_150602) do
+ActiveRecord::Schema.define(version: 2022_02_02_142617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_11_28_150602) do
     t.datetime "hotness_updated_at"
     t.integer "views_count", default: 0, null: false
     t.index ["source_id"], name: "index_articles_on_source_id"
+    t.index ["url", "source_id"], name: "index_articles_on_url_and_source_id", unique: true
   end
 
   create_table "bookmarks", force: :cascade do |t|
