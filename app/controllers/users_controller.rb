@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    render json: UserBlueprint.render(current_user), status: :ok
+    render json: UserBlueprint.render(current_user, view: :me), status: :ok
   end
 
   def dismiss_action
