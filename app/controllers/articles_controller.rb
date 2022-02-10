@@ -76,12 +76,17 @@ class ArticlesController < ApplicationController
           :title,
           :url,
           :canonical_url,
-          :author,
           :metered,
           :read_time,
           :published_at,
           :updated_at,
           {
+            author: [
+              :name,
+              {
+                twitter: %i[id name username]
+              }
+            ],
             image: [
               :url,
               :s3_image_key,

@@ -13,7 +13,9 @@ module Articles
     def build_and_save_article(source, feed_item)
       source.articles.create!(
         title: feed_item[:title],
-        author_name: feed_item[:author],
+        author_name: feed_item.dig(:author, :name),
+        author_twitter_uid: feed_item.dig(:author, :twitter, :id),
+        author_twitter_username: feed_item.dig(:author, :twitter, :username),
         url: feed_item[:url],
         canonical_url: feed_item[:canonical_url],
         image_key: feed_item.dig(:image, :s3_image_key),
