@@ -18,12 +18,20 @@ class User < ApplicationRecord
   mount_uploader :profile_image, ProfileImageUploader
 
   validates :provider, inclusion: { in: Authentication::Providers.all.map(&:to_s) }, allow_nil: true
+  validates :email, :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :username, length: { minimum: 3, maximum: 40 },
+                       format: { with: /\A[a-zA-Z0-9_]+\z/, message: "can only contain aplhabets, numbers and '_'" }
 
   def self.from_external_authorizer(auth)
-    where(email: auth[:info][:email]).first_or_create do |user|
-      user.email = auth[:info][:email]
+    name = auth[:info][:name]
+    email = auth[:info][:email]&.downcase
+    username = "#{email.split('@').first.gsub(/[^0-9a-z ]/i, '')}_#{SecureRandom.hex(3)}"
+
+    find_or_create_by!(email: email) do |user|
+      user.email = email
       user.password = Devise.friendly_token[0, 16]
-      user.name = auth[:info][:name]
+      user.name = name
+      user.username = username
       user.remote_profile_image_url = auth[:info][:image]
       user.provider = auth[:provider]
       user.uid = auth[:uid]
