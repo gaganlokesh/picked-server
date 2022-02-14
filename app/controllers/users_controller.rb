@@ -20,4 +20,15 @@ class UsersController < ApplicationController
       render json: { status: "error", message: "Action is required" }, status: :unprocessable_entity
     end
   end
+
+  def validate_username
+    username = params[:username]&.downcase
+    errors = User.new(username: username).validate_attribute(:username)
+
+    if errors.blank?
+      render json: { valid: true }, status: :ok
+    else
+      render json: { valid: false, message: "Username #{errors.first}" }, status: :ok
+    end
+  end
 end
