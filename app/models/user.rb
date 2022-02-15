@@ -20,7 +20,7 @@ class User < ApplicationRecord
   validates :provider, inclusion: { in: Authentication::Providers.all.map(&:to_s) }, allow_nil: true
   validates :email, :username, presence: true, uniqueness: { case_sensitive: false }
   validates :username, length: { minimum: 3, maximum: 40 },
-                       format: { with: /\A[a-zA-Z0-9_]+\z/, message: "can only contain aplhabets, numbers and '_'" }
+                       format: { with: /\A[a-zA-Z0-9_]+\z/, message: "can only contain alphabets, numbers and '_'" }
 
   def self.from_external_authorizer(auth)
     name = auth[:info][:name]
