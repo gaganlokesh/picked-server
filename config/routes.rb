@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       post :unfollow
     end
   end
-  resources :users, only: [:show] do
+  resources :users, only: %i[show update] do
     collection do
       get :me
       get :validate_username
