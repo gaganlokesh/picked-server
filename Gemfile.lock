@@ -73,7 +73,7 @@ GEM
     anyway_config (2.2.3)
       ruby-next-core (>= 0.14.0)
     ast (2.4.2)
-    bcrypt (3.1.16)
+    bcrypt (3.1.22)
     blueprinter (0.25.3)
     bootsnap (1.9.3)
       msgpack (~> 1.0)
