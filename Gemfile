@@ -40,7 +40,7 @@ gem 'doorkeeper', '~> 5.5'
 # Assertion grant extension for Doorkeeper
 gem 'doorkeeper-grants_assertion', '~> 0.3'
 # Simple, but flexible HTTP client library, with support for multiple backends.
-gem 'faraday', '~> 1.5'
+gem 'faraday', '~> 2.14'
 # Module for the 'fog' gem to support Amazon Web Services
 gem 'fog-aws', '~> 3.12'
 # Slugging and permalink plugin for Active Record
