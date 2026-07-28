@@ -50,7 +50,7 @@ gem 'imgproxy', '~> 2.0'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
 gem 'kaminari-activerecord', "~> 1.2"
 # OAuth 1.0 implementation for Ruby
-gem "oauth", "~> 0.5.7"
+gem "oauth", "~> 1.1.8"
 # Simple, efficient background processing for Ruby
 gem "sidekiq", "~> 6.4.0"
 
